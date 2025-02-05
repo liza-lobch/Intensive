@@ -1,11 +1,18 @@
-package ru.aston.lobchevskaya_eyu.task1;
+package ru.aston.lobchevskaya_eyu.task1.classes;
 
-import ru.aston.lobchevskaya_eyu.task1.classes.*;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 import ru.aston.lobchevskaya_eyu.task1.enums.Route;
 
-public class Main {
-    public static void main(String[] args) {
+import static org.junit.jupiter.api.Assertions.*;
 
+
+public class OrderListTest {
+
+    private OrderList orders;
+
+    @BeforeEach
+    public void setList() {
         User user1 = new User("Иванов", "Пётр", 20);
         User user2 = new User("Андреев", "Кирилл", 25);
         User user3 = new User("Николаев", "Андрей", 40);
@@ -18,15 +25,18 @@ public class Main {
         Order order4 = new AirlineOrder(user4, 2L, 12000L, false);
         Order order5 = new AirlineOrder(user5, 2L, 16000L, true);
 
-        OrderList orders = new OrderList();
+        orders = new OrderList();
         orders.addOrder(order1);
         orders.addOrder(order2);
         orders.addOrder(order3);
         orders.addOrder(order4);
         orders.addOrder(order5);
+    }
 
-        orders.sortOrderListBySurname();
-        System.out.println(orders);
-        System.out.println("Сумма итого по всем пользователям: " + orders.getTotalPrice());
+    @Test
+    public void testTotalPrice() {
+        Long totalPrice = orders.getTotalPrice();
+        Long expected = 75100L;
+        assertEquals(expected, totalPrice);
     }
 }
