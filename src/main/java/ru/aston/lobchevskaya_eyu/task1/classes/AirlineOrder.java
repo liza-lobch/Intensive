@@ -1,12 +1,15 @@
 package ru.aston.lobchevskaya_eyu.task1.classes;
 
+import ru.aston.lobchevskaya_eyu.task1.enums.DiscountPercentage;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 public class AirlineOrder extends Order {
 
-    private final static Integer DISCOUNT_PERCENTAGE = 10;
-    private final static Integer DISCOUNT_PERCENTAGE_FOR_NEW_ROUTES = 50;
     private final Boolean isNewRoute;
 
-    public AirlineOrder(User user, Long amount, Long price, Boolean isNewRoute) {
+    public AirlineOrder(User user, Long amount, BigDecimal price, Boolean isNewRoute) {
         super(user, amount, price);
         this.isNewRoute = isNewRoute;
     }
@@ -16,12 +19,14 @@ public class AirlineOrder extends Order {
     }
 
     @Override
-    public Long getDiscount() {
-        return isNewRoute ? getPrice() * getAmount() * DISCOUNT_PERCENTAGE_FOR_NEW_ROUTES / 100 : getPrice() * getAmount() * DISCOUNT_PERCENTAGE / 100;
+    public BigDecimal getDiscount() {
+        return isNewRoute ?
+                getPrice().multiply(BigDecimal.valueOf(getAmount())).multiply(BigDecimal.valueOf(DiscountPercentage.AIRLINE_PERCENTAGE_FOR_NEW_ROUTES.getPercentage())).divide(BigDecimal.valueOf(100), RoundingMode.CEILING) :
+                getPrice().multiply(BigDecimal.valueOf(getAmount())).multiply(BigDecimal.valueOf(DiscountPercentage.AIRLINE_DISCOUNT_PERCENTAGE.getPercentage())).divide(BigDecimal.valueOf(100), RoundingMode.CEILING);
     }
 
     @Override
-    public Long getDiscountedPrice() {
-        return getPrice() * getAmount() - getDiscount();
+    public BigDecimal getDiscountedPrice() {
+        return getPrice().multiply(BigDecimal.valueOf(getAmount())).subtract(getDiscount());
     }
 }

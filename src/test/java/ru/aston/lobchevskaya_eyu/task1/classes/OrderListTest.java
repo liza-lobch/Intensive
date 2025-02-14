@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import ru.aston.lobchevskaya_eyu.task1.enums.Route;
 
+import java.math.BigDecimal;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -19,11 +21,11 @@ public class OrderListTest {
         User user4 = new User("Петров", "Виктор", 35);
         User user5 = new User("Ильин", "Владислав", 27);
 
-        Order order1 = new BusOrder(user1, 1L, 2000L, Route.CITY_LINE);
-        Order order2 = new BusOrder(user2, 3L, 10000L, Route.BUSINESS_LINE);
-        Order order3 = new AirlineOrder(user3, 1L, 15000L, false);
-        Order order4 = new AirlineOrder(user4, 2L, 12000L, false);
-        Order order5 = new AirlineOrder(user5, 2L, 16000L, true);
+        Order order1 = new BusOrder(user1, 1L, new BigDecimal("2000"), Route.CITY_LINE);
+        Order order2 = new BusOrder(user2, 3L, new BigDecimal("10000"), Route.BUSINESS_LINE);
+        Order order3 = new AirlineOrder(user3, 1L, new BigDecimal("15000"), false);
+        Order order4 = new AirlineOrder(user4, 2L, new BigDecimal("12000"), false);
+        Order order5 = new AirlineOrder(user5, 2L, new BigDecimal("16000"), true);
 
         orders = new OrderList();
         orders.addOrder(order1);
@@ -35,8 +37,8 @@ public class OrderListTest {
 
     @Test
     public void testTotalPrice() {
-        Long totalPrice = orders.getTotalPrice();
-        Long expected = 75100L;
+        BigDecimal totalPrice = orders.getTotalPrice();
+        BigDecimal expected = new BigDecimal("75100");
         assertEquals(expected, totalPrice);
     }
 }

@@ -1,13 +1,16 @@
 package ru.aston.lobchevskaya_eyu.task1.classes;
 
+import ru.aston.lobchevskaya_eyu.task1.enums.DiscountPercentage;
 import ru.aston.lobchevskaya_eyu.task1.enums.Route;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public class BusOrder extends Order {
 
-    private final static Integer DISCOUNT_PERCENTAGE = 25;
     private final Route route;
 
-    public BusOrder(User user, Long amount, Long price, Route route) {
+    public BusOrder(User user, Long amount, BigDecimal price, Route route) {
         super(user, amount, price);
         this.route = route;
     }
@@ -17,12 +20,12 @@ public class BusOrder extends Order {
     }
 
     @Override
-    public Long getDiscount() {
-        return getPrice() * getAmount() * DISCOUNT_PERCENTAGE / 100;
+    public BigDecimal getDiscount() {
+        return getPrice().multiply(BigDecimal.valueOf(getAmount())).multiply(BigDecimal.valueOf(DiscountPercentage.BUS_DISCOUNT_PERCENTAGE.getPercentage())).divide(BigDecimal.valueOf(100), RoundingMode.CEILING);
     }
 
     @Override
-    public Long getDiscountedPrice() {
-        return getPrice() * getAmount() - getDiscount();
+    public BigDecimal getDiscountedPrice() {
+        return getPrice().multiply(BigDecimal.valueOf(getAmount())).subtract(getDiscount());
     }
 }

@@ -3,6 +3,8 @@ package ru.aston.lobchevskaya_eyu.task1;
 import ru.aston.lobchevskaya_eyu.task1.classes.*;
 import ru.aston.lobchevskaya_eyu.task1.enums.Route;
 
+import java.math.BigDecimal;
+
 public class Main {
     public static void main(String[] args) {
 
@@ -10,13 +12,13 @@ public class Main {
         User user2 = new User("Андреев", "Кирилл", 25);
         User user3 = new User("Николаев", "Андрей", 40);
         User user4 = new User("Петров", "Виктор", 35);
-        User user5 = new User("Ильин", "Владислав", 27);
+        User user5 = new User("Иванов", "Владислав", 27);
 
-        Order order1 = new BusOrder(user1, 1L, 2000L, Route.CITY_LINE);
-        Order order2 = new BusOrder(user2, 3L, 10000L, Route.BUSINESS_LINE);
-        Order order3 = new AirlineOrder(user3, 1L, 15000L, false);
-        Order order4 = new AirlineOrder(user4, 2L, 12000L, false);
-        Order order5 = new AirlineOrder(user5, 2L, 16000L, true);
+        Order order1 = new BusOrder(user1, 1L, new BigDecimal("2000"), Route.CITY_LINE);
+        Order order2 = new BusOrder(user2, 3L, new BigDecimal("10000"), Route.BUSINESS_LINE);
+        Order order3 = new AirlineOrder(user3, 1L, new BigDecimal("15000"), false);
+        Order order4 = new AirlineOrder(user4, 2L, new BigDecimal("12000"), false);
+        Order order5 = new AirlineOrder(user5, 2L, new BigDecimal("16000"), true);
 
         OrderList orders = new OrderList();
         orders.addOrder(order1);
@@ -26,7 +28,7 @@ public class Main {
         orders.addOrder(order5);
 
         orders.sortOrderListBySurname();
-        System.out.println(orders);
+        System.out.println(orders.getOrders());
         System.out.println("Сумма итого по всем пользователям: " + orders.getTotalPrice());
     }
 }

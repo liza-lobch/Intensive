@@ -2,21 +2,23 @@ package ru.aston.lobchevskaya_eyu.task1.classes;
 
 import ru.aston.lobchevskaya_eyu.task1.interfaces.Discount;
 
+import java.math.BigDecimal;
+
 public abstract class Order implements Discount {
 
-    private Long price;
+    private BigDecimal price;
     private Long amount;
     private User user;
 
-    public Order(User user, Long amount, Long price) {
+    public Order(User user, Long amount, BigDecimal price) {
         this.user = user;
         this.amount = amount;
         this.price = price;
     }
 
-    public abstract Long getDiscount();
+    public abstract BigDecimal getDiscount();
 
-    public abstract Long getDiscountedPrice();
+    public abstract BigDecimal getDiscountedPrice();
 
     public User getUser() {
         return user;
@@ -34,11 +36,11 @@ public abstract class Order implements Discount {
         this.amount = amount;
     }
 
-    public Long getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Long price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 }

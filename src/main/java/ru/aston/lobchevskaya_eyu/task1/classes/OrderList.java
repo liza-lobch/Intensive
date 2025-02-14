@@ -2,6 +2,7 @@ package ru.aston.lobchevskaya_eyu.task1.classes;
 
 import ru.aston.lobchevskaya_eyu.task1.interfaces.OrderCalculation;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -11,52 +12,45 @@ public class OrderList implements OrderCalculation {
     private List<Order> orders;
 
     public OrderList() {
-        this.orders = new ArrayList();
+        this.orders = new ArrayList<>();
     }
 
-    public OrderList addOrder(Order order) {
+    public void addOrder(Order order) {
         this.orders.add(order);
-        return this;
     }
 
-    public Long getTotalPrice() {
-        Long totalSum = 0L;
-        for (Order order : orders) {
-            totalSum += order.getDiscountedPrice();
-        }
-        return totalSum;
+    public BigDecimal getTotalPrice() {
+        return orders.stream().map(Order::getDiscountedPrice).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    public List<Order> sortOrderListBySurname() {
+    public void sortOrderListBySurname() {
         Comparator<Order> comparator = Comparator.comparing((order) -> order.getUser().getSurname());
         comparator = comparator.thenComparing((order) -> order.getUser().getName());
-        orders.sort(comparator);
-        return orders;
+        orders = orders.stream().sorted(comparator).toList();
     }
 
-    @Override
-    public String toString() {
-        String str = "";
+    public String getOrders() {
+        StringBuilder str = new StringBuilder();
         for (Order order : orders) {
-            str += String.format(""" 
-                                       
-                    Пользователь: %s лет
-                    Вид транспорта: %s
-                    %s
-                    Стоимость билета: %d
-                    Количество билетов: %d
-                    Скидка: %d
-                    Сумма итого: %d
-                    """,
+            str.append(String.format("""
+                            Пользователь: %s лет
+                            Вид транспорта: %s
+                            %s
+                            Стоимость билета: %s
+                            Количество билетов: %d
+                            Скидка: %s
+                            Сумма итого: %s
+                            
+                            """,
                     order.getUser().toString(),
                     order instanceof BusOrder ? "автобус" : "самолёт",
-                    order instanceof BusOrder ? "Вид маршрута: " + ((BusOrder)order).getRoute() : "Новый маршрут: " + ((AirlineOrder)order).getNewRoute(),
+                    order instanceof BusOrder ? "Вид маршрута: " + ((BusOrder) order).getRoute() : "Новый маршрут: " + ((AirlineOrder) order).getNewRoute(),
                     order.getPrice(),
                     order.getAmount(),
                     order.getDiscount(),
                     order.getDiscountedPrice()
-                    );
+            ));
         }
-        return str;
+        return str.toString();
     }
 }
